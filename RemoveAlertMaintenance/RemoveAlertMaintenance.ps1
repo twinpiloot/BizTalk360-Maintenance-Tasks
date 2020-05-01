@@ -12,13 +12,14 @@ param(
 
 If ($MaintenanceId -eq "")
 {
+	Write-Host "MaintenanceId not specified. Trying to fetch latest from BizTalk360"
 	$ResponseSet = Invoke-RestMethod -Uri "http://$BizTalk360ServerName/biztalk360/Services.REST/AlertService.svc/GetAlertMaintenance?environmentId=$BizTalk360EnvironmentId" -Method Get -UseDefaultCredentials
 
 	$maintenance = $ResponseSet.alertMaintenances | where { $_.comment -eq "BizTalk Deploy" } 
 
 	If ($maintenance.Count -gt 0)
 	{
-		$MaintenanceId = $maintenance[0].maintenanceId 
+		$MaintenanceId = $maintenance[$maintenance.Count - 1].maintenanceId 
 	}
 }
 
