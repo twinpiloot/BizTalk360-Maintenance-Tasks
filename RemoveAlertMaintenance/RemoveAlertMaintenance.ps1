@@ -4,7 +4,7 @@ param(
     [string]$BizTalk360EnvironmentId,
 
     [Parameter(Mandatory=$true,HelpMessage="Hostname of the server where BizTalk360 is installed.")]
-    [string]$BizTalk360ServerName
+    [string]$BizTalk360ServerName,
 
     [Parameter(Mandatory=$false,HelpMessage="This is the identifier from the SetAlertMaintenance task.")]
     [string]$MaintenanceId = ""
