@@ -1,0 +1,60 @@
+{
+    "manifestVersion": 1,
+    "id": "biztalk360-maintenance-tasks",
+    "name": "BizTalk360 Maintenance Tasks",
+    "version": "1.0.5",
+    "publisher": "twinpiloot",
+	"public": true,
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Release tasks to set BizTalk360 in and out maintenance mode during deployments.",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "BizTalk360-logo.png"        
+    },
+    "links": {
+        "getstarted": {
+            "uri": "https://github.com/twinpiloot/BizTalk360-Maintenance-Tasks"
+        }
+	},
+    "content": {
+        "details": {
+            "path": "README.md"
+        }
+    },
+    "files": [
+        {
+            "path": "SetAlertMaintenance"
+        },
+        {
+            "path": "RemoveAlertMaintenance"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "SetAlertMaintenance",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "SetAlertMaintenance"
+            }
+        },
+        {
+            "id": "RemoveAlertMaintenance",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "RemoveAlertMaintenance"
+            }
+        }
+    ]
+}
