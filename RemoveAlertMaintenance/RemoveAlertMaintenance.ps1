@@ -10,34 +10,49 @@ param(
     [string]$MaintenanceId = ""
 )
 
+$ResponseSet = Invoke-RestMethod -Uri "http://$BizTalk360ServerName/BizTalk360/Services.REST/AdminService.svc/GetBizTalk360Info" -Method Get -UseDefaultCredentials
+$BizTalk360Version = $ResponseSet.bizTalk360Info.biztalk360Version
+
+## Between BizTalk360 9.0 and 9.1 a breaking change was done in the API
+if ($BizTalk360Version -ge '9.1')
+{
+    $StopOperation = 'StopAlertMaintenance'
+}
+else
+{
+    $StopOperation = 'RemoveAlertMaintenance'
+}
+
 If ($MaintenanceId -eq "")
 {
-	Write-Host "MaintenanceId not specified. Trying to fetch latest from BizTalk360"
-	$ResponseSet = Invoke-RestMethod -Uri "http://$BizTalk360ServerName/biztalk360/Services.REST/AlertService.svc/GetAlertMaintenance?environmentId=$BizTalk360EnvironmentId" -Method Get -UseDefaultCredentials
+       Write-Host "MaintenanceId not specified. Trying to fetch latest from BizTalk360"
+       $ResponseSet = Invoke-RestMethod -Uri "http://$BizTalk360ServerName/biztalk360/Services.REST/AlertService.svc/GetAlertMaintenance?environmentId=$BizTalk360EnvironmentId" -Method Get -UseDefaultCredentials
 
-	$maintenance = @($ResponseSet.alertMaintenances | where { $_.comment -eq "BizTalk Deploy" })
+       $maintenance = @($ResponseSet.alertMaintenances | where { $_.comment -eq "BizTalk Deploy" })
 
-	If ($maintenance.Count -gt 0)
-	{
-		$MaintenanceId = $maintenance[$maintenance.Count - 1].maintenanceId 
-	}
+       If ($maintenance.Count -gt 0)
+       {
+             $MaintenanceId = $maintenance[$maintenance.Count - 1].maintenanceId 
+       }
 }
 
 $Request = '{
   "context": {
-	"callerReference": "AzureDevOps",
-	"environmentSettings": {
-	  "id": "' + $BizTalk360EnvironmentId + '"
-	}
+       "callerReference": "AzureDevOps",
+       "environmentSettings": {
+         "id": "' + $BizTalk360EnvironmentId + '"
+       }
   },
-  "maintenanceId": "' + $MaintenanceId + '"
+  "maintenanceId": "' + $MaintenanceId + '",
+  "comment": "BizTalk Deploy"
 }'
 
 Write-Host $Request
 
-$ResponseSet = Invoke-RestMethod -Uri "http://$BizTalk360ServerName/biztalk360/Services.REST/AlertService.svc/RemoveAlertMaintenance" -Method Post -ContentType "application/json" -Body $Request -UseDefaultCredentials
+$ResponseSet = Invoke-RestMethod -Uri "http://$BizTalk360ServerName/biztalk360/Services.REST/AlertService.svc/$StopOperation" -Method Post -ContentType "application/json" -Body $Request -UseDefaultCredentials
+$ResponseSet
 
 If ($ResponseSet.success)
 {
-	Write-Host "BizTalk360 maintenance mode successfully disabled."
-}
+       Write-Host "BizTalk360 maintenance mode successfully disabled."
+} 
