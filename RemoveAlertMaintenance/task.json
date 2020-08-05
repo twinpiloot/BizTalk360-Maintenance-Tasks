@@ -8,9 +8,9 @@
 	"category": "Deploy",
 	"author": "Martin Peters",
 	"version": {
-		"Major": 1,
+		"Major": 2,
 		"Minor": 0,
-		"Patch": 5
+		"Patch": 1
 	},
 	"instanceNameFormat": "Start BizTalk360 alerts after maintenance",
 	"inputs": [
@@ -23,12 +23,12 @@
 			"helpMarkDown": "BizTalk360 EnvironmentId. See Settings -> API Documentation."
 		},
 		{
-			"name": "BizTalk360ServerName",
+			"name": "BizTalk360ServerUrl",
 			"type": "string",
-			"label": "BizTalk360ServerName",
+			"label": "BizTalk360ServerUrl",
 			"defaultValue": "",
 			"required": true,
-			"helpMarkDown": "Hostname of the server where BizTalk360 is installed."
+			"helpMarkDown": "Url of the server where BizTalk360 is installed, e.g. http://localhost."
 		},
 		{
 			"name": "MaintenanceId",

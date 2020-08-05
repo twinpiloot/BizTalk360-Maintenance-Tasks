@@ -3,14 +3,14 @@ param(
     [Parameter(Mandatory=$true,HelpMessage="BizTalk360 EnvironmentId. See Settings -> API Documentation.")]
     [string]$BizTalk360EnvironmentId,
 
-    [Parameter(Mandatory=$true,HelpMessage="Hostname of the server where BizTalk360 is installed.")]
-    [string]$BizTalk360ServerName,
+    [Parameter(Mandatory=$true,HelpMessage="Url of the server where BizTalk360 is installed, e.g. http://localhost.")]
+    [string]$BizTalk360ServerUrl,
 
     [Parameter(Mandatory=$false,HelpMessage="This is the identifier from the SetAlertMaintenance task.")]
     [string]$MaintenanceId = ""
 )
 
-$ResponseSet = Invoke-RestMethod -Uri "http://$BizTalk360ServerName/BizTalk360/Services.REST/AdminService.svc/GetBizTalk360Info" -Method Get -UseDefaultCredentials
+$ResponseSet = Invoke-RestMethod -Uri "$BizTalk360ServerUrl/BizTalk360/Services.REST/AdminService.svc/GetBizTalk360Info" -Method Get -UseDefaultCredentials
 $BizTalk360Version = $ResponseSet.bizTalk360Info.biztalk360Version
 
 ## Between BizTalk360 9.0 and 9.1 a breaking change was done in the API
@@ -26,7 +26,7 @@ else
 If ($MaintenanceId -eq "")
 {
        Write-Host "MaintenanceId not specified. Trying to fetch latest from BizTalk360"
-       $ResponseSet = Invoke-RestMethod -Uri "http://$BizTalk360ServerName/biztalk360/Services.REST/AlertService.svc/GetAlertMaintenance?environmentId=$BizTalk360EnvironmentId" -Method Get -UseDefaultCredentials
+       $ResponseSet = Invoke-RestMethod -Uri "$BizTalk360ServerUrl/biztalk360/Services.REST/AlertService.svc/GetAlertMaintenance?environmentId=$BizTalk360EnvironmentId" -Method Get -UseDefaultCredentials
 
        $maintenance = @($ResponseSet.alertMaintenances | where { $_.comment -eq "BizTalk Deploy" })
 
@@ -49,7 +49,7 @@ $Request = '{
 
 Write-Host $Request
 
-$ResponseSet = Invoke-RestMethod -Uri "http://$BizTalk360ServerName/biztalk360/Services.REST/AlertService.svc/$StopOperation" -Method Post -ContentType "application/json" -Body $Request -UseDefaultCredentials
+$ResponseSet = Invoke-RestMethod -Uri "$BizTalk360ServerUrl/biztalk360/Services.REST/AlertService.svc/$StopOperation" -Method Post -ContentType "application/json" -Body $Request -UseDefaultCredentials
 $ResponseSet
 
 If ($ResponseSet.success)
