@@ -8,6 +8,7 @@ param(
 )
 
 $DateTime = Get-Date
+$DateTime = $DateTime.ToUniversalTime()
 
 $ResponseSet = Invoke-RestMethod -Uri "http://$BizTalk360ServerName/BizTalk360/Services.REST/AdminService.svc/GetBizTalk360Info" -Method Get -UseDefaultCredentials
 $BizTalk360Version = $ResponseSet.bizTalk360Info.biztalk360Version
