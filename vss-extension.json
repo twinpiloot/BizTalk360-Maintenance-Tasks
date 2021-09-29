@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "biztalk360-maintenance-tasks",
     "name": "BizTalk360 Maintenance Tasks",
-    "version": "1.1.3",
+    "version": "1.1.8",
     "publisher": "twinpiloot",
 	  "public": true,
     "targets": [
@@ -33,6 +33,9 @@
         },
         {
             "path": "RemoveAlertMaintenance"
+        },
+        {
+            "path": "UpdateBizTalk360Mappings"
         }
     ],
     "contributions": [
@@ -54,6 +57,16 @@
             ],
             "properties": {
                 "name": "RemoveAlertMaintenance"
+            }
+        },
+        {
+            "id": "UpdateBizTalk360Mappings",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "UpdateBizTalk360Mappings"
             }
         }
     ]

@@ -11,6 +11,7 @@ param(
 )
 
 $ResponseSet = Invoke-RestMethod -Uri "$BizTalk360ServerUrl/BizTalk360/Services.REST/AdminService.svc/GetBizTalk360Info" -Method Get -UseDefaultCredentials
+$ResponseSet | out-string
 $BizTalk360Version = $ResponseSet.bizTalk360Info.biztalk360Version
 
 ## Between BizTalk360 9.0 and 9.1 a breaking change was done in the API
@@ -27,6 +28,7 @@ If ($MaintenanceId -eq "")
 {
        Write-Host "MaintenanceId not specified. Trying to fetch latest from BizTalk360"
        $ResponseSet = Invoke-RestMethod -Uri "$BizTalk360ServerUrl/biztalk360/Services.REST/AlertService.svc/GetAlertMaintenance?environmentId=$BizTalk360EnvironmentId" -Method Get -UseDefaultCredentials
+	   $ResponseSet | out-string
 
        $maintenance = @($ResponseSet.alertMaintenances | where { $_.comment -eq "BizTalk Deploy" })
 
@@ -50,7 +52,7 @@ $Request = '{
 Write-Host $Request
 
 $ResponseSet = Invoke-RestMethod -Uri "$BizTalk360ServerUrl/biztalk360/Services.REST/AlertService.svc/$StopOperation" -Method Post -ContentType "application/json" -Body $Request -UseDefaultCredentials
-$ResponseSet
+$ResponseSet | out-string
 
 If ($ResponseSet.success)
 {
