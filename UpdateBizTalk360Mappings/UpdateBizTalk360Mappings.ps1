@@ -1,4 +1,4 @@
-﻿[cmdletBinding()]
+[cmdletBinding()]
 param(
     [Parameter(Mandatory=$true,HelpMessage="BizTalk360 EnvironmentId. See Settings -> API Documentation.")]
     [string]$BizTalk360EnvironmentId,
@@ -29,7 +29,7 @@ If (-not $alarmName)
 ## Fetch the AlarmId of the Alarm.
 Write-Host "$BizTalk360ServerUrl/BizTalk360/Services.REST/AlertService.svc/GetUserAlarms?environmentId=$BizTalk360EnvironmentId"
 $response = Invoke-RestMethod "$BizTalk360ServerUrl/BizTalk360/Services.REST/AlertService.svc/GetUserAlarms?environmentId=$BizTalk360EnvironmentId" -Method "GET" -UseDefaultCredentials
-$response | ft -auto
+$response | out-string
 $alarm = $response.userAlarms | Where-Object name -eq $alarmName
 $alarmId = $alarm.alarmId
 
@@ -51,7 +51,7 @@ If ($applicationRefs.Count -eq 0)
     return
 }
 
-$applicationName = $applicationRefs[1].'#text'
+$applicationName = $applicationRefs[0].'#text'
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Content-Type", "application/json")
 
