@@ -49,7 +49,7 @@ The following snippet is part of a YAML pipeline which uses all tasks in a typic
     environment: 'Prod'
     dependsOn: DeployJobNonMgmtDB
     variables:
-      MaintenanceId: $[ dependencies.DeployJobNonMgmtDB.outputs['deploy.SetAlertMaintenance.MaintenanceId'] ]
+      MaintenanceId: $[ dependencies.DeployJobNonMgmtDB.outputs['DeployJobNonMgmtDB.SetAlertMaintenance.MaintenanceId'] ]
     strategy:
       runOnce:
         deploy:
