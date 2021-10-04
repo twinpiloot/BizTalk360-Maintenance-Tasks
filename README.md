@@ -38,7 +38,7 @@ The following snippet is part of a YAML pipeline which uses all tasks in a typic
             inputs:
               BizTalk360EnvironmentId: $(BizTalk360EnvironmentId)
               BizTalk360ServerUrl: $(BizTalk360ServerUrl)
-          - template: tu.biztalk.steps.yml
+          - template: biztalk.steps.yml
             parameters:
               environment: 'Prod'
               deployMgmtDB: false
