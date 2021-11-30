@@ -16,7 +16,7 @@ $ResponseSet | out-string
 $BizTalk360Version = $ResponseSet.bizTalk360Info.biztalk360Version
 
 ## Between BizTalk360 9.0 and 9.1 a breaking change was done in the API
-if ($BizTalk360Version -ge '9.1')
+if ([Version]$BizTalk360Version -ge [Version]'9.1')
 {
     $Request = '{
       "context": {
@@ -26,6 +26,7 @@ if ($BizTalk360Version -ge '9.1')
         }
       },
       "alertMaintenance": {
+        "name": "BizTalk Deploy",
         "comment": "BizTalk Deploy",
         "maintenanceStartTime": "' + $DateTime.ToString("yyyy-MM-ddTHH:mm:ss.000") + '",
         "expiryDateTime": "' + $DateTime.AddHours(1).ToString("yyyy-MM-ddTHH:mm:ss.000") + '",

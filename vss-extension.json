@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "biztalk360-maintenance-tasks",
     "name": "BizTalk360 Maintenance Tasks",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "publisher": "twinpiloot",
 	  "public": true,
     "targets": [
